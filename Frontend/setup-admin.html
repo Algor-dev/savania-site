@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Admin - SAVANIA</title>
+
+    <style>
+        :root {
+            --primary: #e67e22;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .setup-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .setup-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .setup-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .setup-header h1 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .setup-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .setup-steps {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+            .step.completed {
+                background: #d4edda;
+                color: #155724;
+            }
+
+            .step.active {
+                background: #cce7ff;
+                border-left: 4px solid var(--primary);
+            }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step.active .step-icon {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.completed .step-icon {
+            background: var(--success);
+            color: white;
+        }
+
+        .setup-content {
+            margin-bottom: 2rem;
+        }
+
+        .setup-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: var(--dark);
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 1rem;
+                border: 2px solid #e9ecef;
+                border-radius: 10px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+                .form-group input:focus {
+                    outline: none;
+                    border-color: var(--primary);
+                }
+
+        .setup-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .setup-btn:hover {
+                background: #d35400;
+            }
+
+            .setup-btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+        .setup-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+            .setup-message.success {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .setup-message.error {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+    </style>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-card">
+            <div class="setup-logo">🏢</div>
+            <div class="setup-header">
+                <h1>SAVANIA Admin Setup</h1>
+                <p class="setup-subtitle">Configuration du premier compte administrateur</p>
+            </div>
+
+            <div class="setup-steps">
+                <div class="step completed">
+                    <div class="step-icon"><i class="fas fa-check"></i></div>
+                    <div class="step-info">
+                        <strong>Configuration Firebase</strong>
+                        <p>Connexion à la base de données</p>
+                    </div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">2</div>
+                    <div class="step-info">
+                        <strong>Création du Compte Admin</strong>
+                        <p>Premier utilisateur administrateur</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <div class="step-info">
+                        <strong>Finalisation</strong>
+                        <p>Configuration terminée</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setup-content">
+                <div id="setupMessage" class="setup-message" style="display: none;"></div>
+
+                <form class="setup-form" id="setupForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Email Administrateur</label>
+                        <input type="email" id="adminEmail" required placeholder="admin@savania.tg">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Mot de Passe</label>
+                        <input type="password" id="adminPassword" required placeholder="Minimum 6 caractères">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer le Mot de Passe</label>
+                        <input type="password" id="confirmPassword" required placeholder="Retapez votre mot de passe">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminName">Nom Complet</label>
+                        <input type="text" id="adminName" required placeholder="Votre nom complet">
+                    </div>
+
+                    <button type="submit" class="setup-btn" id="setupBtn">
+                        <i class="fas fa-user-plus"></i>
+                        Créer le Compte Admin
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIEKk9ijRz0ilg0dfhH_ZnebM-K03qy5U",
+            authDomain: "savania-a8fdd.firebaseapp.com",
+            projectId: "savania-a8fdd",
+            storageBucket: "savania-a8fdd.firebasestorage.app",
+            messagingSenderId: "891693775472",
+            appId: "1:891693775472:web:23711b1c7be5c6b17592b5",
+            measurementId: "G-SYDQ0JFSN4"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Éléments DOM
+        const setupForm = document.getElementById('setupForm');
+        const setupBtn = document.getElementById('setupBtn');
+        const setupMessage = document.getElementById('setupMessage');
+
+        // Vérifier si un admin existe déjà
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // Vérifier dans Firestore si l'utilisateur est admin
+                const userDoc = await db.collection('admins').doc(user.uid).get();
+                if (userDoc.exists) {
+                    window.location.href = 'admin.html';
+                }
+            }
+        });
+
+        // Création du compte admin
+        setupForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const name = document.getElementById('adminName').value.trim();
+
+            // Validation
+            if (password !== confirmPassword) {
+                showMessage('Les mots de passe ne correspondent pas', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Le mot de passe doit contenir au moins 6 caractères', 'error');
+                return;
+            }
+
+            try {
+                setupBtn.disabled = true;
+                setupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création en cours...';
+
+                // Créer l'utilisateur dans Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Créer le document admin dans Firestore
+                await db.collection('admins').doc(user.uid).set({
+                    email: email,
+                    name: name,
+                    role: 'super-admin',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    isActive: true
+                });
+
+                showMessage('Compte administrateur créé avec succès ! Redirection...', 'success');
+
+                // Redirection vers l'admin
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 2000);
+
+            } catch (error) {
+                setupBtn.disabled = false;
+                setupBtn.innerHTML = '<i class="fas fa-user-plus"></i> Créer le Compte Admin';
+                handleSetupError(error);
+            }
+        });
+
+        function showMessage(message, type) {
+            setupMessage.textContent = message;
+            setupMessage.className = `setup-message ${type}`;
+            setupMessage.style.display = 'block';
+        }
+
+        function handleSetupError(error) {
+            let message = 'Erreur lors de la création du compte';
+
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    message = 'Cet email est déjà utilisé';
+                    break;
+                case 'auth/invalid-email':
+                    message = 'Email invalide';
+                    break;
+                case 'auth/weak-password':
+                    message = 'Le mot de passe est trop faible';
+                    break;
+                case 'auth/operation-not-allowed':
+                    message = 'Opération non autorisée. Contactez le support.';
+                    break;
+            }
+
+            showMessage(message, 'error');
+        }
+    </script>
+</body>
+</html>

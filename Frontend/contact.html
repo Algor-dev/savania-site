@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact SAVANIA - Réservations et Informations à Lomé</title>
+    <meta name="description" content="Contactez le complexe SAVANIA à Lomé pour vos réservations, événements et informations. Adidigomé, Lomé - Togo.">
+    <!-- Styles -->
+    <link rel="stylesheet" href="C:savania-site/css/style.css">
+    <link rel="stylesheet" href="C:savania-site/css/animations.css">
+    
+    <!-- Polices -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Firebase Scripts -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<!-- Configuration -->
+<script src="js/firebase-config.js"></script>
+<script src="js/contact-form.js"></script>
+
+</head>
+<body>
+    <header id="header">
+        <div class="nav-container">
+            <div class="logo"><span>SAVANIA</span></div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li class="dropdown">
+                        <a href="#activites">Activités <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="piscine.html">Piscine</a></li>
+                            <li><a href="salle-jeux.html">Salle de Jeux</a></li>
+                            <li><a href="bubble-tea.html">Bar Bubble Tea</a></li>
+                            <li><a href="fast-food.html">Fast Food</a></li>
+                            <li><a href="boulangerie.html">Boulangerie</a></li>
+                            <li><a href="place-fetes.html">Place des Fêtes</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="packs.html">Packs Anniversaire</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section Contact -->
+    <section class="hero" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80') center/cover;">
+        <div class="hero-content">
+            <h1>CONTACTEZ-NOUS</h1>
+            <p>Notre équipe est à votre écoute pour toutes vos demandes</p>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section class="section contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Informations de Contact -->
+                <div class="contact-info" data-aos="fade-right">
+                    <h2>Prenez Rendez-vous</h2>
+                    <p class="contact-intro">
+                        Que vous souhaitiez réserver une activité, organiser un événement ou simplement obtenir des informations,
+                        notre équipe se fera un plaisir de vous accompagner.
+                    </p>
+
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="method-content">
+                                <h4>Notre Adresse</h4>
+                                <p>Quartier Adidigomé<br>Lomé - Togo</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="method-content">
+                                <h4>Téléphone</h4>
+                                <p>+228 XX XX XX XX</p>
+                                <small>Lun-Dim: 8h00-23h00</small>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="method-content">
+                                <h4>Email</h4>
+                                <p>contact@savania.tg</p>
+                                <small>Réponse sous 24h</small>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="method-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="method-content">
+                                <h4>Horaires</h4>
+                                <p>Lundi - Dimanche: 8h00 - 23h00</p>
+                                <small>Fast Food: 10h00-22h00<br>Boulangerie: 6h00-20h00</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Réseaux Sociaux -->
+                    <div class="social-contact">
+                        <h4>Suivez-nous</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulaire de Contact -->
+                <div class="contact-form-container" data-aos="fade-left">
+                    <form id="contact-form" class="contact-form">
+                        <h3>Envoyez-nous un message</h3>
+
+                        <div class="form-group">
+                            <label for="name">Nom Complet *</label>
+                            <input type="text" id="name" name="name" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                                <div class="error-message"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Téléphone</label>
+                                <input type="tel" id="phone" name="phone">
+                                <div class="error-message"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service">Service concerné *</label>
+                            <select id="service" name="service" required>
+                                <option value="">Sélectionnez un service</option>
+                                <option value="piscine">Piscine</option>
+                                <option value="salle-jeux">Salle de Jeux</option>
+                                <option value="bubble-tea">Bar Bubble Tea</option>
+                                <option value="fast-food">Fast Food</option>
+                                <option value="boulangerie">Boulangerie</option>
+                                <option value="place-fetes">Place des Fêtes</option>
+                                <option value="anniversaire">Packs Anniversaire</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Sujet *</label>
+                            <input type="text" id="subject" name="subject" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Décrivez votre demande en détail..."></textarea>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="newsletter" name="newsletter">
+                            <label for="newsletter">Je souhaite recevoir les actualités et offres spéciales de SAVANIA</label>
+                        </div>
+
+                        <button type="submit" class="cta-button submit-btn">
+                            <span class="btn-text">Envoyer le message</span>
+                            <span class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i> Envoi en cours...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Carte -->
+    <section class="section map-section">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Nous Trouver</h2>
+            <div class="map-container" data-aos="zoom-in">
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Quartier Adidigomé, Lomé</h3>
+                    <p>Le complexe SAVANIA est situé au cœur du quartier Adidigomé, facilement accessible depuis tout Lomé.</p>
+                    <a href="https://maps.google.com" target="_blank" class="cta-button">
+                        <i class="fas fa-directions"></i> Voir sur Google Maps
+                    </a>
+                </div>
+                <!-- Intégrer ici une vraie carte Google Maps -->
+                <!-- <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Rapide -->
+    <section class="section faq-section" style="background: var(--light-color);">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Questions Fréquentes</h2>
+            <div class="faq-grid">
+                <div class="faq-item" data-aos="fade-up">
+                    <div class="faq-question">
+                        <h4>Quels sont les horaires d'ouverture ?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Le complexe est ouvert du lundi au dimanche de 8h00 à 23h00. Chaque espace a ses horaires spécifiques : Fast Food (10h-22h), Boulangerie (6h-20h), Piscine (9h-19h).</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="faq-question">
+                        <h4>Faut-il réserver à l'avance ?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pour la piscine et la salle de jeux, la réservation est recommandée le weekend. Pour les événements et anniversaires, la réservation est obligatoire au moins 48h à l'avance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="faq-question">
+                        <h4>Acceptez-vous les cartes bancaires ?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, nous acceptons les paiements par carte bancaire, mobile money et espèces dans tout le complexe.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="faq-question">
+                        <h4>Y a-t-il un parking ?</h4>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, nous disposons d'un parking privé et sécurisé gratuit pour nos clients.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-aos="zoom-in">
+                <h2>Prêt à vivre l'expérience SAVANIA ?</h2>
+                <p>Rejoignez-nous dès aujourd'hui pour des moments inoubliables</p>
+                <div class="cta-buttons">
+                    <a href="tel:+228XXXXXXXXX" class="cta-button">
+                        <i class="fas fa-phone"></i> Nous Appeler
+                    </a>
+                    <a href="https://wa.me/228XXXXXXXXX" class="cta-button secondary">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- Même footer que index.html -->
+    </footer>
+
+    <script src="js/main.js"></script>
+    <!-- Dans contact.html, avant la fermeture du body -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIEKk9ijRz0ilg0dfhH_ZnebM-K03qy5U",
+            authDomain: "savania-a8fdd.firebaseapp.com",
+            projectId: "savania-a8fdd",
+            storageBucket: "savania-a8fdd.firebasestorage.app",
+            messagingSenderId: "891693775472",
+            appId: "1:891693775472:web:23711b1c7be5c6b17592b5",
+            measurementId: "G-SYDQ0JFSN4"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Gestion du formulaire de contact
+        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.querySelector('.submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const btnLoading = document.querySelector('.btn-loading');
+
+            // Afficher le loading
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'block';
+            submitBtn.disabled = true;
+
+            try {
+                // Récupérer les données du formulaire
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    service: document.getElementById('service').value,
+                    subject: document.getElementById('subject').value,
+                    message: document.getElementById('message').value,
+                    newsletter: document.getElementById('newsletter').checked,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'nouveau',
+                    read: false
+                };
+
+                // Sauvegarder dans Firestore
+                await db.collection('contacts').add(formData);
+
+                // Succès
+                alert('✅ Message envoyé avec succès ! Nous vous répondrons rapidement.');
+                document.getElementById('contactForm').reset();
+
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('❌ Erreur lors de l\'envoi du message. Veuillez réessayer.');
+            } finally {
+                // Cacher le loading
+                btnText.style.display = 'block';
+                btnLoading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
+

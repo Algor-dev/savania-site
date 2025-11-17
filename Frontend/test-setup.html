@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Setup SAVANIA</title>
+</head>
+<body>
+    <h2>Test Configuration Firebase</h2>
+    <button onclick="testFirebase()">Tester Firebase</button>
+    <div id="result"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIEKk9ijRz0ilg0dfhH_ZnebM-K03qy5U",
+            authDomain: "savania-a8fdd.firebaseapp.com",
+            projectId: "savania-a8fdd",
+            storageBucket: "savania-a8fdd.firebasestorage.app",
+            messagingSenderId: "891693775472",
+            appId: "1:891693775472:web:23711b1c7be5c6b17592b5",
+            measurementId: "G-SYDQ0JFSN4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        async function testFirebase() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Test en cours...';
+
+            try {
+                // Test Firestore
+                await db.collection('test').add({
+                    message: 'Test depuis Togo',
+                    timestamp: new Date()
+                });
+                result.innerHTML += '<br>✅ Firestore fonctionne';
+
+                // Test Auth
+                await auth.createUserWithEmailAndPassword('test@savania.tg', '123456');
+                result.innerHTML += '<br>✅ Authentication fonctionne';
+
+            } catch (error) {
+                result.innerHTML += '<br>❌ Erreur: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

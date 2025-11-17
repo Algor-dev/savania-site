@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin SAVANIA - Tableau de Bord Complet</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <!-- Styles -->
+    <style>
+        :root {
+            --primary: #e67e22;
+            --primary-dark: #d35400;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: var(--secondary);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: var(--primary);
+        }
+
+            .sidebar-header h2 {
+                font-size: 1.4rem;
+                margin-bottom: 0.5rem;
+            }
+
+        .user-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .menu-item {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+            .menu-item:hover {
+                background: rgba(255,255,255,0.1);
+            }
+
+            .menu-item.active {
+                background: rgba(230, 126, 34, 0.2);
+                border-left-color: var(--primary);
+            }
+
+            .menu-item i {
+                width: 20px;
+                margin-right: 1rem;
+                font-size: 1.1rem;
+            }
+
+        .badge {
+            background: var(--danger);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1.5rem;
+        }
+
+        .btn-logout {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+            .btn-logout:hover {
+                background: #c0392b;
+            }
+
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease;
+        }
+
+        .admin-header {
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--dark);
+            display: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+            .search-box input {
+                padding: 0.7rem 1rem 0.7rem 2.5rem;
+                border: 1px solid #ddd;
+                border-radius: 25px;
+                width: 250px;
+                transition: all 0.3s ease;
+            }
+
+                .search-box input:focus {
+                    outline: none;
+                    border-color: var(--primary);
+                    width: 300px;
+                }
+
+            .search-box i {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #999;
+            }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background: var(--primary-dark);
+            }
+
+        /* Content Sections */
+        .admin-content {
+            padding: 2rem;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+            .content-section.active {
+                display: block;
+                animation: fadeIn 0.5s ease;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+            .stat-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+            .stat-icon.contacts {
+                background: var(--info);
+            }
+
+            .stat-icon.reservations {
+                background: var(--success);
+            }
+
+            .stat-icon.revenue {
+                background: var(--warning);
+            }
+
+            .stat-icon.users {
+                background: var(--primary);
+            }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Tables */
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .filters-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+            .filters-bar select, .filters-bar input {
+                padding: 0.7rem;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background: white;
+            }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .data-table th {
+                background: var(--light);
+                padding: 1rem;
+                text-align: left;
+                font-weight: 600;
+                color: var(--dark);
+            }
+
+            .data-table td {
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            .data-table tr:hover {
+                background: #f8f9fa;
+            }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-nouveau {
+            background: #ffeaa7;
+            color: #e17055;
+        }
+
+        .status-en_cours {
+            background: #a29bfe;
+            color: white;
+        }
+
+        .status-traite {
+            background: #55efc4;
+            color: #00b894;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-edit {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+            .close:hover {
+                color: var(--danger);
+            }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+
+                .admin-sidebar.active {
+                    transform: translateX(0);
+                }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .search-box input {
+                width: 200px;
+            }
+
+                .search-box input:focus {
+                    width: 250px;
+                }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-bar {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+
+        <!-- Sidebar -->
+        <nav class="admin-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>🏢 SAVANIA ADMIN</h2>
+                <span class="user-info" id="userInfo">Chargement...</span>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Tableau de Bord</span>
+                </li>
+                <li class="menu-item" data-tab="contacts">
+                    <i class="fas fa-users"></i>
+                    <span>Contacts</span>
+                    <span class="badge" id="newContactsBadge">0</span>
+                </li>
+                <li class="menu-item" data-tab="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Réservations</span>
+                </li>
+                <li class="menu-item" data-tab="packs">
+                    <i class="fas fa-birthday-cake"></i>
+                    <span>Packs Anniversaire</span>
+                </li>
+                <li class="menu-item" data-tab="services">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Services</span>
+                </li>
+                <li class="menu-item" data-tab="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="pageTitle">Tableau de Bord</h1>
+                </div>
+
+                <div class="header-right">
+                    <div class="search-box">
+                        <input type="text" id="globalSearch" placeholder="Rechercher...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button class="btn-primary" id="exportBtn">
+                        <i class="fas fa-download"></i>
+                        Exporter
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Dashboard -->
+                <section id="dashboard" class="content-section active">
+                    <div class="stats-grid" id="statsGrid">
+                        <div class="stat-card">
+                            <div class="stat-icon contacts">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalContacts">0</h3>
+                                <p>Contacts Totaux</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon reservations">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalReservations">0</h3>
+                                <p>Réservations</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon packs">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalPacks">0</h3>
+                                <p>Packs Vendus</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon revenue">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalRevenue">0 F</h3>
+                                <p>Revenu Total</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Activité Récente</h3>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Détails</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentActivity"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contacts -->
+                <section id="contacts" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestion des Contacts</h2>
+                        <button class="btn-primary" id="refreshContacts">
+                            <i class="fas fa-sync"></i>
+                            Actualiser
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <select id="statusFilter">
+                            <option value="">Tous les statuts</option>
+                            <option value="nouveau">Nouveaux</option>
+                            <option value="en_cours">En cours</option>
+                            <option value="traite">Traités</option>
+                        </select>
+                        <select id="serviceFilter">
+                            <option value="">Tous les services</option>
+                            <option value="piscine">Piscine</option>
+                            <option value="salle-jeux">Salle de Jeux</option>
+                            <option value="bubble-tea">Bubble Tea</option>
+                            <option value="fast-food">Fast Food</option>
+                            <option value="boulangerie">Boulangerie</option>
+                            <option value="place-fetes">Place des Fêtes</option>
+                            <option value="anniversaire">Anniversaire</option>
+                        </select>
+                        <input type="date" id="dateFilter">
+                        <button class="btn-primary" id="clearFilters">
+                            <i class="fas fa-times"></i>
+                            Effacer
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contactsTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination" id="contactsPagination"></div>
+                </section>
+
+                <!-- Réservations -->
+                <section id="reservations" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestion des Réservations</h2>
+                        <button class="btn-primary" id="addReservation">
+                            <i class="fas fa-plus"></i>
+                            Nouvelle Réservation
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Service</th>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Personnes</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reservationsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Packs Anniversaire -->
+                <section id="packs" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestion des Packs Anniversaire</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="packsEnfants">0</h3>
+                                <p>Packs Enfants</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 id="packsAdultes">0</h3>
+                                <p>Packs Adultes</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                    <th>Participants</th>
+                                    <th>Prix</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="packsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Contact -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Détails du Contact</h3>
+            <div id="contactModalContent"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIEKk9ijRz0ilg0dfhH_ZnebM-K03qy5U",
+            authDomain: "savania-a8fdd.firebaseapp.com",
+            projectId: "savania-a8fdd",
+            storageBucket: "savania-a8fdd.firebasestorage.app",
+            messagingSenderId: "891693775472",
+            appId: "1:891693775472:web:23711b1c7be5c6b17592b5",
+            measurementId: "G-SYDQ0JFSN4"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Données simulées pour la démo
+        const sampleData = {
+            contacts: [
+                {
+                    id: 1,
+                    name: "Jean Dupont",
+                    email: "jean@example.com",
+                    phone: "+228 12 34 56 78",
+                    service: "piscine",
+                    date: "2024-01-15",
+                    status: "nouveau",
+                    message: "Bonjour, je souhaite réserver la piscine pour samedi."
+                },
+                {
+                    id: 2,
+                    name: "Marie Koné",
+                    email: "marie@example.com",
+                    phone: "+228 98 76 54 32",
+                    service: "anniversaire",
+                    date: "2024-01-14",
+                    status: "en_cours",
+                    message: "Demande d'information pour un anniversaire enfant."
+                }
+            ],
+            reservations: [
+                {
+                    id: 1,
+                    client: "Sarah Mensah",
+                    service: "Salle de Jeux",
+                    date: "2024-01-20",
+                    heure: "15:00",
+                    personnes: 8,
+                    status: "confirmée"
+                }
+            ],
+            packs: [
+                {
+                    id: 1,
+                    type: "Pack Matinée Enfant",
+                    client: "Mr. Agbessi",
+                    date: "2024-01-25",
+                    participants: 6,
+                    prix: "250 000 F",
+                    status: "réservé"
+                }
+            ]
+        };
+
+        // Gestion de l'authentification
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('userInfo').textContent = user.email;
+                loadDashboard();
+            } else {
+                window.location.href = 'admin-login.html';
+            }
+        });
+
+        // Navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function () {
+                const tab = this.getAttribute('data-tab');
+
+                // Mettre à jour le menu actif
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                // Afficher la section correspondante
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(tab).classList.add('active');
+
+                // Mettre à jour le titre
+                document.getElementById('pageTitle').textContent = this.querySelector('span').textContent;
+
+                // Charger les données de la section
+                loadSectionData(tab);
+            });
+        });
+
+        // Sidebar toggle pour mobile
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Déconnexion
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            auth.signOut().then(() => {
+                window.location.href = 'admin-login.html';
+            });
+        });
+
+        // Fonctions de chargement des données
+        function loadDashboard() {
+            // Simuler le chargement des données
+            setTimeout(() => {
+                document.getElementById('totalContacts').textContent = sampleData.contacts.length;
+                document.getElementById('totalReservations').textContent = sampleData.reservations.length;
+                document.getElementById('totalPacks').textContent = sampleData.packs.length;
+                document.getElementById('totalRevenue').textContent = "1 250 000 F";
+
+                // Badge nouveaux contacts
+                const newContacts = sampleData.contacts.filter(c => c.status === 'nouveau').length;
+                document.getElementById('newContactsBadge').textContent = newContacts;
+
+                // Activité récente
+                loadRecentActivity();
+            }, 1000);
+        }
+
+        function loadSectionData(section) {
+            switch (section) {
+                case 'contacts':
+                    loadContacts();
+                    break;
+                case 'reservations':
+                    loadReservations();
+                    break;
+                case 'packs':
+                    loadPacks();
+                    break;
+            }
+        }
+
+        function loadContacts() {
+            const tbody = document.getElementById('contactsTableBody');
+            tbody.innerHTML = '';
+
+            sampleData.contacts.forEach(contact => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${contact.name}</td>
+                        <td>${contact.email}</td>
+                        <td>${contact.phone}</td>
+                        <td>${contact.service}</td>
+                        <td>${contact.date}</td>
+                        <td><span class="status-badge status-${contact.status}">${contact.status}</span></td>
+                        <td class="action-buttons">
+                            <button class="btn-action btn-view" onclick="viewContact(${contact.id})">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit" onclick="editContact(${contact.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="deleteContact(${contact.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadReservations() {
+            const tbody = document.getElementById('reservationsTableBody');
+            tbody.innerHTML = '';
+
+            sampleData.reservations.forEach(reservation => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${reservation.client}</td>
+                        <td>${reservation.service}</td>
+                        <td>${reservation.date}</td>
+                        <td>${reservation.heure}</td>
+                        <td>${reservation.personnes}</td>
+                        <td><span class="status-badge status-${reservation.status}">${reservation.status}</span></td>
+                        <td class="action-buttons">
+                            <button class="btn-action btn-view">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadPacks() {
+            const tbody = document.getElementById('packsTableBody');
+            tbody.innerHTML = '';
+
+            sampleData.packs.forEach(pack => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${pack.type}</td>
+                        <td>${pack.client}</td>
+                        <td>${pack.date}</td>
+                        <td>${pack.participants}</td>
+                        <td>${pack.prix}</td>
+                        <td><span class="status-badge status-${pack.status}">${pack.status}</span></td>
+                        <td class="action-buttons">
+                            <button class="btn-action btn-view">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadRecentActivity() {
+            const tbody = document.getElementById('recentActivity');
+            tbody.innerHTML = '';
+
+            const activities = [
+                { type: 'Contact', details: 'Nouveau message de Jean Dupont', date: '2024-01-15', status: 'nouveau' },
+                { type: 'Réservation', details: 'Salle de jeux réservée par Sarah', date: '2024-01-14', status: 'confirmée' },
+                { type: 'Pack', details: 'Pack anniversaire réservé par Mr. Agbessi', date: '2024-01-13', status: 'réservé' }
+            ];
+
+            activities.forEach(activity => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${activity.type}</td>
+                        <td>${activity.details}</td>
+                        <td>${activity.date}</td>
+                        <td><span class="status-badge status-${activity.status}">${activity.status}</span></td>
+                    `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Fonctions modales
+        function viewContact(id) {
+            const contact = sampleData.contacts.find(c => c.id === id);
+            if (contact) {
+                document.getElementById('contactModalContent').innerHTML = `
+                        <p><strong>Nom:</strong> ${contact.name}</p>
+                        <p><strong>Email:</strong> ${contact.email}</p>
+                        <p><strong>Téléphone:</strong> ${contact.phone}</p>
+                        <p><strong>Service:</strong> ${contact.service}</p>
+                        <p><strong>Date:</strong> ${contact.date}</p>
+                        <p><strong>Statut:</strong> ${contact.status}</p>
+                        <p><strong>Message:</strong> ${contact.message}</p>
+                    `;
+                document.getElementById('contactModal').style.display = 'block';
+            }
+        }
+
+        // Fermer la modal
+        document.querySelector('.close').addEventListener('click', function () {
+            document.getElementById('contactModal').style.display = 'none';
+        });
+
+        // Fermer la modal en cliquant à l'extérieur
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Export des données
+        document.getElementById('exportBtn').addEventListener('click', function () {
+            alert('Fonctionnalité d\'export à implémenter');
+        });
+
+        // Rafraîchir les contacts
+        document.getElementById('refreshContacts').addEventListener('click', function () {
+            loadContacts();
+        });
+
+        // Initialisation
+        loadDashboard();
+    </script>
+</body>
+</html>
