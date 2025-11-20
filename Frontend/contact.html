@@ -299,7 +299,7 @@
     <!-- Dans contact.html, avant la fermeture du body -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
+    <!-- Remplacer cette partie du script dans contact.html -->
     <script>
         // Configuration Firebase
         const firebaseConfig = {
@@ -316,8 +316,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Gestion du formulaire de contact
-        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+        // Gestion du formulaire de contact - CORRECTION DE L'ID
+        document.getElementById('contact-form').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const submitBtn = document.querySelector('.submit-btn');
@@ -349,7 +349,7 @@
 
                 // Succès
                 alert('✅ Message envoyé avec succès ! Nous vous répondrons rapidement.');
-                document.getElementById('contactForm').reset();
+                document.getElementById('contact-form').reset();
 
             } catch (error) {
                 console.error('Erreur:', error);

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Page Not Found</title>
+
+    <style media="screen">
+      /* Variables CSS modernes */
+      :root {
+        --primary: #4361ee;
+        --secondary: #3a0ca3;
+        --accent: #f72585;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --shadow: 0 20px 40px rgba(0,0,0,0.1);
+        --gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+      }
+
+      /* Reset et base */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--gradient);
+        color: white;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Effets d'arrière-plan animés */
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+          radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+        animation: backgroundShift 15s ease-in-out infinite;
+      }
+
+      @keyframes backgroundShift {
+        0%, 100% { transform: scale(1) rotate(0deg); }
+        50% { transform: scale(1.1) rotate(180deg); }
+      }
+
+      /* Conteneur principal */
+      #message {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        color: var(--dark);
+        max-width: 480px;
+        margin: 20px;
+        padding: 50px 40px;
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Animation flottante continue */
+      #message {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotateX(0); }
+        50% { transform: translateY(-10px) rotateX(5deg); }
+      }
+
+      /* Titres */
+      #message h2 {
+        color: var(--accent);
+        font-weight: 800;
+        font-size: 120px;
+        margin: 0 0 10px;
+        text-shadow: 0 10px 30px rgba(247, 37, 133, 0.3);
+        animation: pulse 2s ease-in-out infinite;
+        line-height: 1;
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+      }
+
+      #message h1 {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0 0 20px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      #message h3 {
+        color: #666;
+        font-weight: 600;
+        font-size: 18px;
+        margin: 25px 0 15px;
+        position: relative;
+        display: inline-block;
+      }
+
+      #message h3::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: var(--gradient);
+        border-radius: 2px;
+      }
+
+      /* Paragraphes */
+      #message p {
+        line-height: 1.6;
+        margin: 20px 0;
+        font-size: 16px;
+        color: #555;
+        animation: fadeIn 1s ease-out 0.5s both;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Code */
+      #message code {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        border: 1px solid rgba(67, 97, 238, 0.2);
+      }
+
+      /* Bouton */
+      #message a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient);
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
+        padding: 16px 32px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        margin-top: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 30px rgba(67, 97, 238, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      #message a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      #message a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(67, 97, 238, 0.4);
+      }
+
+      #message a:hover::before {
+        left: 100%;
+      }
+
+      /* Effets de particules */
+      .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .particle {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        animation: floatParticle 15s infinite linear;
+      }
+
+      @keyframes floatParticle {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        body {
+          padding: 20px;
+          background: var(--gradient);
+        }
+        
+        #message {
+          margin: 0;
+          padding: 40px 25px;
+          border-radius: 20px;
+        }
+        
+        #message h2 {
+          font-size: 80px;
+        }
+        
+        #message h1 {
+          font-size: 24px;
+        }
+      }
+
+      /* Animation d'entrée séquentielle */
+      #message > * {
+        opacity: 0;
+        animation: slideInUp 0.6s ease-out forwards;
+      }
+
+      #message h2 { animation-delay: 0.1s; }
+      #message h1 { animation-delay: 0.2s; }
+      #message p:nth-of-type(1) { animation-delay: 0.3s; }
+      #message h3 { animation-delay: 0.4s; }
+      #message p:nth-of-type(2) { animation-delay: 0.5s; }
+      #message a { animation-delay: 0.6s; }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Particules animées en fond -->
+    <div class="particles" id="particles"></div>
+
+    <div id="message">
+      <h2>404</h2>
+      <h1>Page Not Found</h1>
+      <p>The specified file was not found on this website. Please check the URL for mistakes and try again.</p>
+      <h3>Why am I seeing this?</h3>
+      <p>This page was generated by the Firebase Command-Line Interface. To modify it, edit the <code>404.html</code> file in your project's configured <code>public</code> directory.</p>
+      <a href="/">Return to Homepage</a>
+    </div>
+
+    <script>
+      // Génération de particules animées
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 15;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          
+          // Propriétés aléatoires
+          const size = Math.random() * 6 + 2;
+          const left = Math.random() * 100;
+          const animationDuration = Math.random() * 20 + 10;
+          const animationDelay = Math.random() * 5;
+          
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${left}vw`;
+          particle.style.animationDuration = `${animationDuration}s`;
+          particle.style.animationDelay = `${animationDelay}s`;
+          particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`;
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Effet de saisie au survol
+      document.addEventListener('DOMContentLoaded', function() {
+        createParticles();
+        
+        // Effet de vibration légère sur le titre 404
+        const title404 = document.querySelector('#message h2');
+        setInterval(() => {
+          title404.style.transform = `scale(${1 + Math.random() * 0.02})`;
+        }, 2000);
+      });
+
+      // Interaction souris - effet de profondeur
+      document.addEventListener('mousemove', (e) => {
+        const message = document.getElementById('message');
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        
+        message.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) translateY(-10px)`;
+      });
+
+      document.addEventListener('mouseleave', () => {
+        const message = document.getElementById('message');
+        message.style.transform = 'rotateY(0) rotateX(0) translateY(-10px)';
+      });
+    </script>
+  </body>
+</html>
