@@ -418,7 +418,44 @@ header {
   transition: all var(--transition-fast);
 }
 
+/* Styles pour le logo image */
+.logo-image {
+    height: 50px; /* Ajustez selon votre logo */
+    width: auto;
+    max-width: 200px;
+    transition: all 0.3s ease;
+}
 
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #e67e22; /* Couleur SAVANIA */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .logo-image {
+        height: 40px;
+    }
+
+    .logo-text {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text {
+        display: none; /* Cache le texte sur mobile très petit */
+    }
+}
 
 /* ===== HERO SECTION ===== */
 .hero {
