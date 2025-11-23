@@ -420,7 +420,7 @@ header {
 
 /* Styles pour le logo image */
 .logo-image {
-    height: 50px; /* Ajustez selon votre logo */
+    height: 60px; /* Ajustez selon votre logo */
     width: auto;
     max-width: 200px;
     transition: all 0.3s ease;
