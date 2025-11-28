@@ -1,0 +1,11 @@
+{
+  "name": "Test Manuel",
+  "email": "test@example.com",
+  "phone": "70 12 34 56",
+  "service": "piscine",
+  "subject": "Test manuel",
+  "message": "Créé via CLI",
+  "newsletter": true,
+  "status": "nouveau",
+  "read": false
+}

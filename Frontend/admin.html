@@ -864,26 +864,26 @@
         }
 
         .btn-secondary {
-    padding: 1rem;
-    border: 2px solid var(--light);
-    background: white;
-    color: var(--dark);
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
+            padding: 1rem;
+            border: 2px solid var(--light);
+            background: white;
+            color: var(--dark);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
 
-.btn-secondary:hover {
-    border-color: var(--danger);
-    color: var(--danger);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
-}
+        .btn-secondary:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+        }
 
         @keyframes modalSlideIn {
             from {
@@ -973,7 +973,6 @@
             animation: spin 1s linear infinite;
         }
 
-
         /* ============ LOADING MODERNE ============ */
         .loading {
             opacity: 0.6;
@@ -1025,7 +1024,7 @@
 </head>
 <body>
     <div class="admin-container">
-        <!-- Sidebar (identique) -->
+        <!-- Sidebar -->
         <nav class="admin-sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>🏢 SAVANIA ADMIN</h2>
@@ -1376,121 +1375,121 @@
         </div>
     </div>
 
-<!-- Modal Réservation Moderne -->
-<div id="reservationModal" class="modal">
-    <div class="modal-content" style="max-width: 600px;">
-        <span class="close">&times;</span>
-        
-        <div class="modal-header" style="margin-bottom: 2rem;">
-            <h3 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--dark);">
-                <i class="fas fa-calendar-plus" style="color: var(--primary); margin-right: 0.5rem;"></i>
-                Nouvelle Réservation
-            </h3>
-            <p style="color: #64748b; font-size: 0.9375rem;">Remplissez les informations pour créer une nouvelle réservation</p>
+    <!-- Modal Réservation Moderne -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close">&times;</span>
+            
+            <div class="modal-header" style="margin-bottom: 2rem;">
+                <h3 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--dark);">
+                    <i class="fas fa-calendar-plus" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                    Nouvelle Réservation
+                </h3>
+                <p style="color: #64748b; font-size: 0.9375rem;">Remplissez les informations pour créer une nouvelle réservation</p>
+            </div>
+
+            <form id="reservationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientName">
+                            <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
+                            Nom du Client
+                        </label>
+                        <input type="text" id="clientName" name="clientName" required placeholder="Ex: Jean Dupont">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientPhone">
+                            <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
+                            Téléphone
+                        </label>
+                        <input type="tel" id="clientPhone" name="clientPhone" required placeholder="+228 XX XX XX XX">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientEmail">
+                        <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
+                        Email
+                    </label>
+                    <input type="email" id="clientEmail" name="clientEmail" placeholder="exemple@email.com">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reservationService">
+                            <i class="fas fa-concierge-bell" style="margin-right: 0.5rem;"></i>
+                            Service
+                        </label>
+                        <select id="reservationService" name="service" required>
+                            <option value="">Choisissez un service</option>
+                            <option value="piscine">🏊 Piscine</option>
+                            <option value="salle-jeux">🎮 Salle de Jeux</option>
+                            <option value="bubble-tea">🧋 Bar Bubble Tea</option>
+                            <option value="fast-food">🍔 Fast Food</option>
+                            <option value="place-fetes">🎉 Place des Fêtes</option>
+                            <option value="anniversaire">🎂 Pack Anniversaire</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reservationPeople">
+                            <i class="fas fa-users" style="margin-right: 0.5rem;"></i>
+                            Nombre de personnes
+                        </label>
+                        <input type="number" id="reservationPeople" name="people" min="1" max="50" required placeholder="Ex: 4">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reservationDate">
+                            <i class="fas fa-calendar-day" style="margin-right: 0.5rem;"></i>
+                            Date
+                        </label>
+                        <input type="date" id="reservationDate" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reservationTime">
+                            <i class="fas fa-clock" style="margin-right: 0.5rem;"></i>
+                            Heure
+                        </label>
+                        <input type="time" id="reservationTime" name="time" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reservationNotes">
+                        <i class="fas fa-sticky-note" style="margin-right: 0.5rem;"></i>
+                        Notes supplémentaires
+                    </label>
+                    <textarea id="reservationNotes" name="notes" rows="3" placeholder="Informations complémentaires, allergies, préférences..."></textarea>
+                </div>
+
+                <div class="form-group" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%); padding: 1rem; border-radius: 12px; border-left: 4px solid var(--success);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-info-circle" style="color: var(--success);"></i>
+                        <strong style="color: var(--success);">Information</strong>
+                    </div>
+                    <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
+                        La réservation sera confirmée automatiquement. Un rappel sera envoyé au client 24h avant la date prévue.
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn-secondary" onclick="document.getElementById('reservationModal').style.display = 'none'" style="flex: 1; padding: 1rem; border: 2px solid var(--light); background: white; color: var(--dark); border-radius: 12px; font-weight: 600; cursor: pointer; transition: var(--transition);">
+                        <i class="fas fa-times" style="margin-right: 0.5rem;"></i>
+                        Annuler
+                    </button>
+                    <button type="submit" class="submit-btn" style="flex: 2;">
+                        <i class="fas fa-calendar-check" style="margin-right: 0.5rem;"></i>
+                        Créer la Réservation
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <form id="reservationForm">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="clientName">
-                        <i class="fas fa-user" style="margin-right: 0.5rem;"></i>
-                        Nom du Client
-                    </label>
-                    <input type="text" id="clientName" name="clientName" required placeholder="Ex: Jean Dupont">
-                </div>
-                
-                <div class="form-group">
-                    <label for="clientPhone">
-                        <i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
-                        Téléphone
-                    </label>
-                    <input type="tel" id="clientPhone" name="clientPhone" required placeholder="+228 XX XX XX XX">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="clientEmail">
-                    <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
-                    Email
-                </label>
-                <input type="email" id="clientEmail" name="clientEmail" placeholder="exemple@email.com">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="reservationService">
-                        <i class="fas fa-concierge-bell" style="margin-right: 0.5rem;"></i>
-                        Service
-                    </label>
-                    <select id="reservationService" name="service" required>
-                        <option value="">Choisissez un service</option>
-                        <option value="piscine">🏊 Piscine</option>
-                        <option value="salle-jeux">🎮 Salle de Jeux</option>
-                        <option value="bubble-tea">🧋 Bar Bubble Tea</option>
-                        <option value="fast-food">🍔 Fast Food</option>
-                        <option value="place-fetes">🎉 Place des Fêtes</option>
-                        <option value="anniversaire">🎂 Pack Anniversaire</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="reservationPeople">
-                        <i class="fas fa-users" style="margin-right: 0.5rem;"></i>
-                        Nombre de personnes
-                    </label>
-                    <input type="number" id="reservationPeople" name="people" min="1" max="50" required placeholder="Ex: 4">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="reservationDate">
-                        <i class="fas fa-calendar-day" style="margin-right: 0.5rem;"></i>
-                        Date
-                    </label>
-                    <input type="date" id="reservationDate" name="date" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="reservationTime">
-                        <i class="fas fa-clock" style="margin-right: 0.5rem;"></i>
-                        Heure
-                    </label>
-                    <input type="time" id="reservationTime" name="time" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="reservationNotes">
-                    <i class="fas fa-sticky-note" style="margin-right: 0.5rem;"></i>
-                    Notes supplémentaires
-                </label>
-                <textarea id="reservationNotes" name="notes" rows="3" placeholder="Informations complémentaires, allergies, préférences..."></textarea>
-            </div>
-
-            <div class="form-group" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%); padding: 1rem; border-radius: 12px; border-left: 4px solid var(--success);">
-                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <i class="fas fa-info-circle" style="color: var(--success);"></i>
-                    <strong style="color: var(--success);">Information</strong>
-                </div>
-                <p style="font-size: 0.875rem; color: #64748b; margin: 0;">
-                    La réservation sera confirmée automatiquement. Un rappel sera envoyé au client 24h avant la date prévue.
-                </p>
-            </div>
-
-            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                <button type="button" class="btn-secondary" onclick="document.getElementById('reservationModal').style.display = 'none'" style="flex: 1; padding: 1rem; border: 2px solid var(--light); background: white; color: var(--dark); border-radius: 12px; font-weight: 600; cursor: pointer; transition: var(--transition);">
-                    <i class="fas fa-times" style="margin-right: 0.5rem;"></i>
-                    Annuler
-                </button>
-                <button type="submit" class="submit-btn" style="flex: 2;">
-                    <i class="fas fa-calendar-check" style="margin-right: 0.5rem;"></i>
-                    Créer la Réservation
-                </button>
-            </div>
-        </form>
     </div>
-</div>>
 
     <script>
         // Configuration Firebase
@@ -2001,48 +2000,48 @@
 
         // Fonctions CRUD
         async function createReservation() {
-    const submitBtn = document.querySelector('#reservationForm .submit-btn');
-    const originalText = submitBtn.innerHTML;
-    
-    // Afficher le loading
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création en cours...';
-    submitBtn.disabled = true;
+            const submitBtn = document.querySelector('#reservationForm .submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Afficher le loading
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création en cours...';
+            submitBtn.disabled = true;
 
-    const formData = {
-        clientName: document.getElementById('clientName').value,
-        clientEmail: document.getElementById('clientEmail').value,
-        clientPhone: document.getElementById('clientPhone').value,
-        service: document.getElementById('reservationService').value,
-        date: document.getElementById('reservationDate').value,
-        time: document.getElementById('reservationTime').value,
-        people: parseInt(document.getElementById('reservationPeople').value),
-        notes: document.getElementById('reservationNotes').value,
-        status: 'confirmée',
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    };
+            const formData = {
+                clientName: document.getElementById('clientName').value,
+                clientEmail: document.getElementById('clientEmail').value,
+                clientPhone: document.getElementById('clientPhone').value,
+                service: document.getElementById('reservationService').value,
+                date: document.getElementById('reservationDate').value,
+                time: document.getElementById('reservationTime').value,
+                people: parseInt(document.getElementById('reservationPeople').value),
+                notes: document.getElementById('reservationNotes').value,
+                status: 'confirmée',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
 
-    try {
-        await db.collection('reservations').add(formData);
-        
-        // Succès
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> Réservation créée !';
-        submitBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
-        
-        setTimeout(() => {
-            document.getElementById('reservationForm').reset();
-            document.getElementById('reservationModal').style.display = 'none';
-            submitBtn.innerHTML = originalText;
-            submitBtn.style.background = 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)';
-            submitBtn.disabled = false;
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Erreur:', error);
-        alert('❌ Erreur lors de la création de la réservation');
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
+            try {
+                await db.collection('reservations').add(formData);
+                
+                // Succès
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Réservation créée !';
+                submitBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
+                
+                setTimeout(() => {
+                    document.getElementById('reservationForm').reset();
+                    document.getElementById('reservationModal').style.display = 'none';
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)';
+                    submitBtn.disabled = false;
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('❌ Erreur lors de la création de la réservation');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
 
         async function editContactStatus(contactId) {
             const contact = allContacts.find(c => c.id === contactId);
@@ -2167,14 +2166,13 @@
         }
 
         // Initialiser la date du formulaire avec aujourd'hui
-document.getElementById('reservationDate').min = new Date().toISOString().split('T')[0];
-document.getElementById('reservationDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('reservationDate').min = new Date().toISOString().split('T')[0];
+        document.getElementById('reservationDate').value = new Date().toISOString().split('T')[0];
 
-// Initialiser l'heure avec l'heure actuelle + 1 heure
-const now = new Date();
-now.setHours(now.getHours() + 1);
-document.getElementById('reservationTime').value = now.toTimeString().slice(0, 5);
-
+        // Initialiser l'heure avec l'heure actuelle + 1 heure
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        document.getElementById('reservationTime').value = now.toTimeString().slice(0, 5);
     </script>
 </body>
 </html>

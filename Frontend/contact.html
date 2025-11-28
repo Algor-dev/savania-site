@@ -14,27 +14,20 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <!-- Firebase Scripts -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<!-- Configuration -->
-<script src="js/firebase-config.js"></script>
-<script src="js/contact-form.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
 <body>
     <header id="header">
         <div class="nav-container">
-<div class="logo">
-        <a href="home.html" class="logo-link">
-            <img src="assets/icons/blanc LOGO SAVANIA_T.png" 
-                 alt="SAVANIA Complexe de Loisirs - Piscine, Salle de jeux, Restaurant à Lomé Togo"
-                 class="logo-image">
-
-            <!--(Logo SAVANIA) -->
-         <!--   <span class="logo-text">SAVANIA</span>-->
-        </a>
-    </div>             <nav>
+            <div class="logo">
+                <a href="home.html" class="logo-link">
+                    <img src="assets/icons/blanc LOGO SAVANIA_T.png" 
+                         alt="SAVANIA Complexe de Loisirs - Piscine, Salle de jeux, Restaurant à Lomé Togo"
+                         class="logo-image">
+                </a>
+            </div>
+            <nav>
                 <ul class="nav-menu">
                     <li><a href="home.html">Accueil</a></li>
                     <li class="dropdown">
@@ -97,7 +90,7 @@
                             </div>
                             <div class="method-content">
                                 <h4>Téléphone</h4>
-                                <p>+228 XX XX XX XX</p>
+                                <p>+228 93 10 85 85</p>
                                 <small>Lun-Dim: 8h00-23h00</small>
                             </div>
                         </div>
@@ -153,19 +146,19 @@
                         <div class="form-group">
                             <label for="name">Nom Complet *</label>
                             <input type="text" id="name" name="name" required>
-                            <div class="error-message"></div>
+                            <div class="error-message" id="nameError"></div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="email">Email *</label>
                                 <input type="email" id="email" name="email" required>
-                                <div class="error-message"></div>
+                                <div class="error-message" id="emailError"></div>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Téléphone</label>
-                                <input type="tel" id="phone" name="phone">
-                                <div class="error-message"></div>
+                                <label for="phone">Téléphone *</label>
+                                <input type="tel" id="phone" name="phone" required placeholder="70 12 34 56 ou 90 12 34 56">
+                                <div class="error-message" id="phoneError"></div>
                             </div>
                         </div>
 
@@ -182,19 +175,19 @@
                                 <option value="anniversaire">Packs Anniversaire</option>
                                 <option value="autre">Autre</option>
                             </select>
-                            <div class="error-message"></div>
+                            <div class="error-message" id="serviceError"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="subject">Sujet *</label>
                             <input type="text" id="subject" name="subject" required>
-                            <div class="error-message"></div>
+                            <div class="error-message" id="subjectError"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="message">Message *</label>
                             <textarea id="message" name="message" rows="5" required placeholder="Décrivez votre demande en détail..."></textarea>
-                            <div class="error-message"></div>
+                            <div class="error-message" id="messageError"></div>
                         </div>
 
                         <div class="form-group checkbox-group">
@@ -227,8 +220,6 @@
                         <i class="fas fa-directions"></i> Voir sur Google Maps
                     </a>
                 </div>
-                <!-- Intégrer ici une vraie carte Google Maps -->
-                <!-- <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe> -->
             </div>
         </div>
     </section>
@@ -300,10 +291,8 @@
     </section>
 
     <script src="js/main.js"></script>
-    <!-- Dans contact.html, avant la fermeture du body -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <!-- Remplacer cette partie du script dans contact.html -->
+    
+    <!-- Firebase et gestion du formulaire - VERSION SIMPLIFIÉE ET FONCTIONNELLE -->
     <script>
         // Configuration Firebase
         const firebaseConfig = {
@@ -320,13 +309,116 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Gestion du formulaire de contact - CORRECTION DE L'ID
-        document.getElementById('contact-form').addEventListener('submit', async function (e) {
+        // Fonctions utilitaires simples
+        function validatePhone(phone) {
+            const cleanedPhone = phone.replace(/\D/g, '');
+            return /^(70|90|91|92|93|96|97|98|99)\d{6}$/.test(cleanedPhone);
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = message;
+                element.style.display = 'block';
+            }
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+                element.textContent = '';
+            });
+        }
+
+        function formatPhoneNumber(phone) {
+            return phone.replace(/\D/g, '').replace(/(\d{2})(\d{2})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+        }
+
+        // Validation en temps réel du téléphone
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                value = value.match(/.{1,2}/g).join(' ');
+            }
+            e.target.value = value;
+            
+            const phoneError = document.getElementById('phoneError');
+            if (value && !validatePhone(value)) {
+                phoneError.textContent = 'Format: 70 12 34 56 ou 90 12 34 56';
+                phoneError.style.display = 'block';
+            } else {
+                phoneError.style.display = 'none';
+            }
+        });
+
+        // Gestion du formulaire - VERSION SIMPLIFIÉE ET FONCTIONNELLE
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const submitBtn = document.querySelector('.submit-btn');
             const btnText = document.querySelector('.btn-text');
             const btnLoading = document.querySelector('.btn-loading');
+
+            // Nettoyer les erreurs précédentes
+            clearErrors();
+
+            // Récupérer les valeurs
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const service = document.getElementById('service').value;
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const newsletter = document.getElementById('newsletter').checked;
+
+            // Validation simple
+            let isValid = true;
+
+            if (!name) {
+                showError('nameError', 'Le nom est obligatoire');
+                isValid = false;
+            }
+
+            if (!email) {
+                showError('emailError', 'L\'email est obligatoire');
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                showError('emailError', 'Format d\'email invalide');
+                isValid = false;
+            }
+
+            if (!phone) {
+                showError('phoneError', 'Le téléphone est obligatoire');
+                isValid = false;
+            } else if (!validatePhone(phone)) {
+                showError('phoneError', 'Format: 70 12 34 56 ou 90 12 34 56');
+                isValid = false;
+            }
+
+            if (!service) {
+                showError('serviceError', 'Veuillez sélectionner un service');
+                isValid = false;
+            }
+
+            if (!subject) {
+                showError('subjectError', 'Le sujet est obligatoire');
+                isValid = false;
+            }
+
+            if (!message) {
+                showError('messageError', 'Le message est obligatoire');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
 
             // Afficher le loading
             btnText.style.display = 'none';
@@ -334,21 +426,23 @@
             submitBtn.disabled = true;
 
             try {
-                // Récupérer les données du formulaire
+                // Préparer les données
                 const formData = {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    service: document.getElementById('service').value,
-                    subject: document.getElementById('subject').value,
-                    message: document.getElementById('message').value,
-                    newsletter: document.getElementById('newsletter').checked,
+                    name: name,
+                    email: email,
+                    phone: formatPhoneNumber(phone),
+                    service: service,
+                    subject: subject,
+                    message: message,
+                    newsletter: newsletter,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     status: 'nouveau',
                     read: false
                 };
 
-                // Sauvegarder dans Firestore
+                console.log("📤 Envoi des données:", formData);
+
+                // Envoyer à Firebase
                 await db.collection('contacts').add(formData);
 
                 // Succès
@@ -357,7 +451,7 @@
 
             } catch (error) {
                 console.error('Erreur:', error);
-                alert('❌ Erreur lors de l\'envoi du message. Veuillez réessayer.');
+                alert('❌ Erreur lors de l\'envoi: ' + error.message);
             } finally {
                 // Cacher le loading
                 btnText.style.display = 'block';
@@ -365,7 +459,11 @@
                 submitBtn.disabled = false;
             }
         });
+
+        // Debug: Vérifier que tout est chargé
+        console.log("✅ Contact page loaded successfully");
+        console.log("Firebase initialized:", !!firebase.apps.length);
+        console.log("Form element:", document.getElementById('contact-form'));
     </script>
 </body>
 </html>
-

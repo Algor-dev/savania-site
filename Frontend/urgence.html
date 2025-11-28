@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>CRÉATION URGENCE DOCUMENT</h1>
+    <button onclick="creerDocument()">CLIQUEZ ICI POUR CRÉER</button>
+    <div id="resultat"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBIEKk9ijRz0ilg0dfhH_ZnebM-K03qy5U",
+            authDomain: "savania-a8fdd.firebaseapp.com",
+            projectId: "savania-a8fdd",
+            storageBucket: "savania-a8fdd.firebasestorage.app",
+            messagingSenderId: "891693775472",
+            appId: "1:891693775472:web:23711b1c7be5c6b17592b5",
+            measurementId: "G-SYDQ0JFSN4"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        async function creerDocument() {
+            const bouton = document.querySelector('button');
+            bouton.disabled = true;
+            bouton.textContent = 'Création en cours...';
+            
+            try {
+                // Créer le document
+                await db.collection('contacts').doc('document-urgence').set({
+                    name: "Test Manuel",
+                    email: "test@example.com",
+                    phone: "70 12 34 56",
+                    service: "piscine",
+                    subject: "Test manuel",
+                    message: "Créé via script d'urgence",
+                    newsletter: true,
+                    status: "nouveau",
+                    read: false,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                document.getElementById('resultat').innerHTML = 
+                    '<h2 style="color: green">✅ SUCCÈS ! Document créé.</h2>' +
+                    '<p>Allez vérifier dans Firebase Console > Firestore > Data</p>' +
+                    '<p>Vous devriez voir la collection "contacts" avec le document "document-urgence"</p>';
+                
+                bouton.textContent = '✅ DOCUMENT CRÉÉ';
+                
+            } catch (error) {
+                document.getElementById('resultat').innerHTML = 
+                    '<h2 style="color: red">❌ ERREUR</h2>' +
+                    '<p><strong>Message:</strong> ' + error.message + '</p>' +
+                    '<p><strong>Code:</strong> ' + error.code + '</p>' +
+                    '<p><strong>Solution:</strong> Vérifiez les règles Firestore (mode test)</p>';
+                
+                bouton.textContent = '❌ ÉCHEC - Cliquez pour réessayer';
+                bouton.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
